@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Authentication\Queris\" />
+    <Folder Include="Features\Authorization\Command\Dtos\" />
     <Folder Include="Features\Departement\Command\" />
     <Folder Include="Mapping\Departments\CommandMapping\" />
   </ItemGroup>

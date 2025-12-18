@@ -7,23 +7,26 @@ using System.Threading.Tasks;
 
 namespace SchoolProject.Application.Bases
 {
+
     public class Response<T>
     {
         public Response()
         {
-
         }
+
         public Response(T data, string message = null)
         {
             Succeeded = true;
             Message = message;
             Data = data;
         }
+
         public Response(string message)
         {
             Succeeded = false;
             Message = message;
         }
+
         public Response(string message, bool succeeded)
         {
             Succeeded = succeeded;
@@ -36,7 +39,36 @@ namespace SchoolProject.Application.Bases
         public bool Succeeded { get; set; }
         public string Message { get; set; }
         public List<string> Errors { get; set; }
-        //public Dictionary<string, List<string>> ErrorsBag { get; set; }
         public T Data { get; set; }
+
+
+
+        public static Response<T> Success(T data, string message = null)
+        {
+            return new Response<T>(data, message)
+            {
+                StatusCode = HttpStatusCode.OK
+            };
+        }
+
+        public static Response<T> Fail(string message,
+            HttpStatusCode statusCode = HttpStatusCode.BadRequest,
+            List<string> errors = null)
+        {
+            return new Response<T>(message)
+            {
+                StatusCode = statusCode,
+                Errors = errors
+            };
+        }
+
+        public static Response<T> NotFound(string message = "Not Found")
+        {
+            return new Response<T>(message)
+            {
+                StatusCode = HttpStatusCode.NotFound
+            };
+        }
     }
+
 }

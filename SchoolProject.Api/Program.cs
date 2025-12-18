@@ -9,12 +9,13 @@ using School.Shared.Helper;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Microsoft.Extensions.Options;
+using SchoolProject.Infrastructure.Identity;
 
 namespace SchoolProject.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -95,7 +96,14 @@ namespace SchoolProject.Api
 
             #endregion
 
+          
+
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                await IdentitySeed.SeedAsync(scope.ServiceProvider);
+            }
 
             var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);
